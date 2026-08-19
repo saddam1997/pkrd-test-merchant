@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import moment from "moment";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   TbBrandApple,
   TbShieldLock,
@@ -17,9 +17,15 @@ const Home = () => {
   const [amount, setAmount] = useState(50000);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [orderId, setOrderId] = useState("");
+  const [createdTime, setCreatedTime] = useState("");
 
-  const orderId = useMemo(() => {
-    return `ORD-${Date.now()}`;
+  useEffect(() => {
+    const handle = requestAnimationFrame(() => {
+      setOrderId(`ORD-${Date.now()}`);
+      setCreatedTime(moment().format("DD MMM YYYY hh:mm A"));
+    });
+    return () => cancelAnimationFrame(handle);
   }, []);
 
   const product = {
@@ -243,9 +249,7 @@ const Home = () => {
                 </span>
 
                 <span className="font-medium">
-                  {moment().format(
-                    "DD MMM YYYY hh:mm A"
-                  )}
+                  {createdTime}
                 </span>
               </div>
 
